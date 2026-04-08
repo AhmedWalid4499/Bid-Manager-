@@ -5,245 +5,333 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Bid Command — Dar Al-Handasah</title>
   <link rel="stylesheet" href="style.css">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏗️</text></svg>">
 </head>
 <body>
 
-<!-- LOADING -->
-<div class="loading-overlay" id="loading-overlay">
-  <div style="text-align:center">
-    <div style="font-size:52px;margin-bottom:16px">🏗️</div>
-    <div style="font-family:'Playfair Display',serif;font-size:36px;font-weight:700;color:#ffffff;margin-bottom:6px">Bid Command</div>
-    <div style="font-family:'DM Mono',monospace;font-size:11px;color:#d4a017;letter-spacing:3px;margin-bottom:36px;text-transform:uppercase">Dar Al-Handasah</div>
-    <div class="spinner"></div>
-    <div style="font-size:13px;color:rgba(255,255,255,0.4);margin-top:20px">Loading your bids...</div>
-  </div>
+<!-- ─── LOADING ──────────────────────────────────────────────── -->
+<div class="loading-screen" id="loading-screen">
+  <div style="font-size:40px; margin-bottom:4px">🏗️</div>
+  <div class="loading-logo">Bid Command</div>
+  <div class="loading-sub">Dar Al-Handasah</div>
+  <div class="spinner" style="margin-top:8px"></div>
 </div>
 
-<div class="layout">
+<!-- ─── APP SHELL ────────────────────────────────────────────── -->
+<div class="app-shell">
 
   <!-- SIDEBAR -->
-  <nav class="sidebar">
-    <div class="sidebar-logo">
-      <span class="logo-mark">🏗️</span>
-      <div class="logo-text">Bid Command</div>
-      <span class="logo-sub">Dar Al-Handasah</span>
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <div class="brand-icon">🏗️</div>
+      <div>
+        <div class="brand-name">Bid Command</div>
+        <div class="brand-sub">Dar Al-Handasah</div>
+      </div>
     </div>
-    <div class="sidebar-nav">
-      <div class="nav-section-label">Main</div>
-      <a class="nav-item active" data-page="dashboard" href="#">
-        <span class="nav-icon">⬛</span> Dashboard
+
+    <nav class="nav-group">
+      <div class="nav-label">Main</div>
+      <a class="nav-link active" data-page="dashboard" href="#">
+        <span class="nav-icon">▦</span>
+        Dashboard
       </a>
-      <a class="nav-item" data-page="bids" href="#">
-        <span class="nav-icon">📁</span> Bids &amp; Tenders
+      <a class="nav-link" data-page="bids" href="#">
+        <span class="nav-icon">📁</span>
+        Bids &amp; Tenders
         <span class="nav-badge" data-badge="bids" style="display:none"></span>
       </a>
-      <a class="nav-item" data-page="kanban" href="#">
-        <span class="nav-icon">🗂️</span> Kanban Board
+      <a class="nav-link" data-page="kanban" href="#">
+        <span class="nav-icon">⧉</span>
+        Kanban Board
       </a>
-      <a class="nav-item" data-page="tasks" href="#">
-        <span class="nav-icon">✅</span> Task Manager
+      <a class="nav-link" data-page="tasks" href="#">
+        <span class="nav-icon">✓</span>
+        Task Manager
         <span class="nav-badge" data-badge="tasks" style="display:none"></span>
       </a>
-      <div class="nav-section-label">Resources</div>
-      <a class="nav-item" data-page="contacts" href="#">
-        <span class="nav-icon">👥</span> Contacts
+    </nav>
+
+    <nav class="nav-group">
+      <div class="nav-label">Resources</div>
+      <a class="nav-link" data-page="contacts" href="#">
+        <span class="nav-icon">👥</span>
+        Contacts
       </a>
-      <a class="nav-item" data-page="documents" href="#">
-        <span class="nav-icon">📄</span> Documents
+      <a class="nav-link" data-page="documents" href="#">
+        <span class="nav-icon">📄</span>
+        Documents
       </a>
-    </div>
-    <div class="sidebar-user">
+    </nav>
+
+    <div class="sidebar-footer">
       <div class="sidebar-user-name">Bid Manager</div>
       <div class="sidebar-user-role">DAR AL-HANDASAH · MEA</div>
     </div>
-  </nav>
+  </aside>
 
-  <!-- TOPBAR -->
-  <header class="topbar">
-    <div class="topbar-title" id="topbar-title">Dashboard</div>
-    <div class="topbar-date" id="topbar-date"></div>
-    <div style="display:flex;gap:8px;margin-left:16px">
-      <button class="btn btn-outline btn-sm" onclick="window.openTaskModal()">+ Task</button>
-      <button class="btn btn-primary btn-sm" onclick="window.openBidModal()">+ New Bid</button>
-    </div>
-  </header>
+  <!-- CONTENT AREA -->
+  <div class="content-area">
 
-  <main class="main">
-
-    <!-- DASHBOARD -->
-    <div class="page active" id="page-dashboard">
-      <div class="page-header">
-        <div class="page-header-left">
-          <span class="page-eyebrow">Welcome back</span>
-          <h1 class="page-title">Operations Overview</h1>
-          <p class="page-subtitle">All your bids, tasks and deadlines in one place.</p>
-        </div>
-        <div class="page-actions">
-          <button class="btn btn-outline" onclick="window.openTaskModal()">+ Add Task</button>
-          <button class="btn btn-primary" onclick="window.openBidModal()">+ New Bid</button>
-        </div>
+    <!-- TOPBAR -->
+    <header class="topbar">
+      <div class="topbar-page-title" id="topbar-title">Dashboard</div>
+      <div class="topbar-date" id="topbar-date"></div>
+      <div class="topbar-actions">
+        <button class="btn btn-secondary btn-sm" onclick="window.openTaskModal()">
+          + Add Task
+        </button>
+        <button class="btn btn-primary btn-sm" onclick="window.openBidModal()">
+          + New Bid
+        </button>
       </div>
-      <div class="stats-grid" id="dash-stats"></div>
-      <div class="grid-2 gap-20" style="margin-bottom:36px">
-        <div>
-          <div class="section-header">
-            <div class="section-title">⏰ Upcoming Deadlines</div>
-            <a class="btn btn-ghost btn-sm" data-page="bids" href="#">View all →</a>
-          </div>
-          <div class="bids-grid" id="dash-urgent" style="grid-template-columns:1fr"></div>
-        </div>
-        <div style="display:flex;flex-direction:column;gap:24px">
-          <div class="card">
-            <div class="card-title">📊 Bid Pipeline</div>
-            <div id="dash-pipeline"></div>
-          </div>
+    </header>
+
+    <!-- PAGES -->
+    <div class="main-scroll">
+
+      <!-- ══════════════════════════════════════════════════
+           PAGE: DASHBOARD
+      ══════════════════════════════════════════════════════ -->
+      <div class="page active" id="page-dashboard">
+
+        <div class="page-header">
           <div>
-            <div class="section-header">
-              <div class="section-title">📋 Upcoming Tasks</div>
-              <a class="btn btn-ghost btn-sm" data-page="tasks" href="#">View all →</a>
-            </div>
-            <div id="dash-tasks"></div>
+            <span class="page-eyebrow">Welcome back</span>
+            <h1 class="page-title">Operations Overview</h1>
+            <p class="page-subtitle">All your bids, tasks, and deadlines in one place.</p>
+          </div>
+          <div class="page-actions">
+            <button class="btn btn-secondary" onclick="window.openTaskModal()">+ Add Task</button>
+            <button class="btn btn-primary" onclick="window.openBidModal()">+ New Bid</button>
           </div>
         </div>
-      </div>
-    </div>
 
-    <!-- BIDS -->
-    <div class="page" id="page-bids">
-      <div class="page-header">
-        <div class="page-header-left">
-          <span class="page-eyebrow">Bid Registry</span>
-          <h1 class="page-title">Bids &amp; Tenders</h1>
-          <p class="page-subtitle">Manage every bid from preparation through to award decision.</p>
+        <!-- KPI Stats -->
+        <div class="stats-row" id="dash-stats">
+          <!-- Rendered by JS -->
         </div>
-        <div class="page-actions">
-          <button class="btn btn-primary" onclick="window.openBidModal()">+ New Bid</button>
-        </div>
-      </div>
-      <div class="filter-bar">
-        <input class="search-input" id="bids-search" placeholder="🔍  Search by name, client or reference...">
-        <select class="form-select" id="bids-filter" style="width:auto;min-width:160px">
-          <option value="all">All Statuses</option>
-          <option value="prep">In Preparation</option>
-          <option value="active">Active</option>
-          <option value="submitted">Submitted</option>
-          <option value="won">Won</option>
-          <option value="lost">Lost</option>
-          <option value="paused">On Hold</option>
-        </select>
-      </div>
-      <div class="bids-grid" id="bids-grid"></div>
-    </div>
 
-    <!-- KANBAN -->
-    <div class="page" id="page-kanban">
-      <div class="page-header">
-        <div class="page-header-left">
-          <span class="page-eyebrow">Workflow</span>
-          <h1 class="page-title">Kanban Board</h1>
-          <p class="page-subtitle">Drag and drop task cards to update their progress status.</p>
+        <!-- Main grid: urgent + sidebar -->
+        <div class="dash-grid">
+
+          <!-- Left column -->
+          <div>
+            <div class="section-header mb-16">
+              <h2 class="section-title">⏰ Upcoming Deadlines</h2>
+              <a class="btn btn-ghost btn-sm" data-page="bids" href="#">See all bids →</a>
+            </div>
+            <div class="bids-grid" id="dash-urgent" style="grid-template-columns: 1fr;"></div>
+
+            <div style="margin-top: 32px;">
+              <div class="section-header mb-16">
+                <h2 class="section-title">📋 Pending Tasks</h2>
+                <a class="btn btn-ghost btn-sm" data-page="tasks" href="#">See all tasks →</a>
+              </div>
+              <div id="dash-tasks"></div>
+            </div>
+          </div>
+
+          <!-- Right sidebar column -->
+          <div style="display: flex; flex-direction: column; gap: 20px;">
+            <div class="card">
+              <div class="card-header">
+                <span class="card-title">📊 Bid Pipeline</span>
+              </div>
+              <div class="card-body" id="dash-pipeline"></div>
+            </div>
+          </div>
+
         </div>
-        <div class="page-actions">
-          <select class="form-select" id="kanban-bid-filter" style="min-width:200px">
+      </div>
+
+      <!-- ══════════════════════════════════════════════════
+           PAGE: BIDS
+      ══════════════════════════════════════════════════════ -->
+      <div class="page" id="page-bids">
+        <div class="page-header">
+          <div>
+            <span class="page-eyebrow">Bid Registry</span>
+            <h1 class="page-title">Bids &amp; Tenders</h1>
+            <p class="page-subtitle">Manage every bid from preparation through to award decision.</p>
+          </div>
+          <div class="page-actions">
+            <button class="btn btn-primary" onclick="window.openBidModal()">+ New Bid</button>
+          </div>
+        </div>
+
+        <div class="filter-bar">
+          <div class="search-box">
+            <span class="search-box-icon">🔍</span>
+            <input class="search-input" id="bids-search" placeholder="Search by name, client or reference...">
+          </div>
+          <select class="form-control" id="bids-filter" style="width: auto; min-width: 160px;">
+            <option value="all">All Statuses</option>
+            <option value="prep">In Preparation</option>
+            <option value="active">Active</option>
+            <option value="submitted">Submitted</option>
+            <option value="won">Won</option>
+            <option value="lost">Lost</option>
+            <option value="paused">On Hold</option>
+          </select>
+        </div>
+
+        <div class="bids-grid" id="bids-grid"></div>
+      </div>
+
+      <!-- ══════════════════════════════════════════════════
+           PAGE: KANBAN
+      ══════════════════════════════════════════════════════ -->
+      <div class="page" id="page-kanban">
+        <div class="page-header">
+          <div>
+            <span class="page-eyebrow">Workflow</span>
+            <h1 class="page-title">Kanban Board</h1>
+            <p class="page-subtitle">Drag and drop task cards to track their progress.</p>
+          </div>
+          <div class="page-actions">
+            <select class="form-control" id="kanban-bid-filter" style="min-width: 200px;">
+              <option value="all">All Bids</option>
+            </select>
+            <button class="btn btn-primary" onclick="window.openTaskModal()">+ Add Card</button>
+          </div>
+        </div>
+        <div class="kanban-board" id="kanban-board"></div>
+      </div>
+
+      <!-- ══════════════════════════════════════════════════
+           PAGE: TASKS
+      ══════════════════════════════════════════════════════ -->
+      <div class="page" id="page-tasks">
+        <div class="page-header">
+          <div>
+            <span class="page-eyebrow">Task Tracker</span>
+            <h1 class="page-title">Task Management</h1>
+            <p class="page-subtitle">Track every task across all bids, sorted by urgency.</p>
+          </div>
+          <div class="page-actions">
+            <button class="btn btn-primary" onclick="window.openTaskModal()">+ New Task</button>
+          </div>
+        </div>
+
+        <div id="tasks-stats"></div>
+
+        <div class="filter-bar">
+          <div class="search-box">
+            <span class="search-box-icon">🔍</span>
+            <input class="search-input" id="tasks-search" placeholder="Search tasks...">
+          </div>
+          <select class="form-control" id="tasks-bid-filter" style="width: auto; min-width: 180px;">
             <option value="all">All Bids</option>
           </select>
-          <button class="btn btn-primary" onclick="window.openTaskModal()">+ Add Card</button>
+          <select class="form-control" id="tasks-priority-filter" style="width: auto;">
+            <option value="all">All Priorities</option>
+            <option value="high">🔴 High</option>
+            <option value="medium">🟡 Medium</option>
+            <option value="low">🟢 Low</option>
+          </select>
+          <select class="form-control" id="tasks-status-filter" style="width: auto;">
+            <option value="pending">Pending</option>
+            <option value="done">Completed</option>
+            <option value="all">All Tasks</option>
+          </select>
         </div>
-      </div>
-      <div class="kanban-board" id="kanban-board"></div>
-    </div>
 
-    <!-- TASKS -->
-    <div class="page" id="page-tasks">
-      <div class="page-header">
-        <div class="page-header-left">
-          <span class="page-eyebrow">Task Tracker</span>
-          <h1 class="page-title">Task Management</h1>
-          <p class="page-subtitle">Every task across all bids, sorted by urgency.</p>
-        </div>
-        <div class="page-actions">
-          <button class="btn btn-primary" onclick="window.openTaskModal()">+ New Task</button>
-        </div>
+        <div id="tasks-list"></div>
       </div>
-      <div id="tasks-stats"></div>
-      <div class="filter-bar">
-        <input class="search-input" id="tasks-search" placeholder="🔍  Search tasks...">
-        <select class="form-select" id="tasks-bid-filter" style="width:auto;min-width:180px">
-          <option value="all">All Bids</option>
-        </select>
-        <select class="form-select" id="tasks-priority-filter" style="width:auto">
-          <option value="all">All Priorities</option>
-          <option value="high">🔴 High</option>
-          <option value="medium">🟡 Medium</option>
-          <option value="low">🟢 Low</option>
-        </select>
-        <select class="form-select" id="tasks-status-filter" style="width:auto">
-          <option value="pending">Pending</option>
-          <option value="done">Completed</option>
-          <option value="all">All Tasks</option>
-        </select>
-      </div>
-      <div id="tasks-list"></div>
-    </div>
 
-    <!-- CONTACTS -->
-    <div class="page" id="page-contacts">
-      <div class="page-header">
-        <div class="page-header-left">
-          <span class="page-eyebrow">Stakeholder Directory</span>
-          <h1 class="page-title">Contacts</h1>
-          <p class="page-subtitle">Clients, consultants, sub-consultants, and key stakeholders.</p>
+      <!-- ══════════════════════════════════════════════════
+           PAGE: CONTACTS
+      ══════════════════════════════════════════════════════ -->
+      <div class="page" id="page-contacts">
+        <div class="page-header">
+          <div>
+            <span class="page-eyebrow">Stakeholder Directory</span>
+            <h1 class="page-title">Contacts</h1>
+            <p class="page-subtitle">Clients, consultants, sub-consultants, and key stakeholders.</p>
+          </div>
+          <div class="page-actions">
+            <button class="btn btn-primary" onclick="window.openContactModal()">+ Add Contact</button>
+          </div>
         </div>
-        <div class="page-actions">
-          <button class="btn btn-primary" onclick="window.openContactModal()">+ Add Contact</button>
-        </div>
-      </div>
-      <div class="filter-bar">
-        <input class="search-input" id="contacts-search" placeholder="🔍  Search contacts...">
-      </div>
-      <div class="card">
-        <div class="table-wrap">
-          <table>
-            <thead><tr><th>Name</th><th>Role</th><th>Company</th><th>Category</th><th>Phone</th><th>Actions</th></tr></thead>
-            <tbody id="contacts-tbody"></tbody>
-          </table>
-        </div>
-      </div>
-    </div>
 
-    <!-- DOCUMENTS -->
-    <div class="page" id="page-documents">
-      <div class="page-header">
-        <div class="page-header-left">
-          <span class="page-eyebrow">Document Registry</span>
-          <h1 class="page-title">Documents</h1>
-          <p class="page-subtitle">Links to proposals, drawings, contracts, and reference files.</p>
+        <div class="filter-bar">
+          <div class="search-box">
+            <span class="search-box-icon">🔍</span>
+            <input class="search-input" id="contacts-search" placeholder="Search contacts...">
+          </div>
         </div>
-        <div class="page-actions">
-          <button class="btn btn-primary" onclick="window.openDocModal()">+ Add Document</button>
-        </div>
-      </div>
-      <div class="filter-bar">
-        <select class="form-select" id="docs-bid-filter" style="min-width:220px">
-          <option value="all">All Bids</option>
-        </select>
-      </div>
-      <div class="card">
-        <div class="table-wrap">
-          <table>
-            <thead><tr><th style="width:44px"></th><th>Document</th><th>Bid</th><th>Category</th><th>Notes</th><th>Actions</th></tr></thead>
-            <tbody id="docs-tbody"></tbody>
-          </table>
-        </div>
-      </div>
-    </div>
 
-  </main>
-</div>
+        <div class="card">
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Role</th>
+                  <th>Company</th>
+                  <th>Category</th>
+                  <th>Phone</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="contacts-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
 
-<!-- MODALS -->
-<div class="modal-overlay" id="modal-bid-detail" onclick="if(event.target===this){window.closeModal('modal-bid-detail');window.App.openDetailBidId=null;}">
+      <!-- ══════════════════════════════════════════════════
+           PAGE: DOCUMENTS
+      ══════════════════════════════════════════════════════ -->
+      <div class="page" id="page-documents">
+        <div class="page-header">
+          <div>
+            <span class="page-eyebrow">Document Registry</span>
+            <h1 class="page-title">Documents</h1>
+            <p class="page-subtitle">Links to proposals, drawings, contracts, and reference files.</p>
+          </div>
+          <div class="page-actions">
+            <button class="btn btn-primary" onclick="window.openDocModal()">+ Add Document</button>
+          </div>
+        </div>
+
+        <div class="filter-bar">
+          <select class="form-control" id="docs-bid-filter" style="min-width: 220px;">
+            <option value="all">All Bids</option>
+          </select>
+        </div>
+
+        <div class="card">
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th style="width:44px;"></th>
+                  <th>Document</th>
+                  <th>Bid</th>
+                  <th>Category</th>
+                  <th>Notes</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="docs-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /main-scroll -->
+  </div><!-- /content-area -->
+</div><!-- /app-shell -->
+
+
+<!-- ══════════════════════════════════════════════════════════
+     MODALS
+══════════════════════════════════════════════════════════════ -->
+
+<!-- BID DETAIL -->
+<div class="modal-backdrop" id="modal-bid-detail"
+  onclick="if(event.target===this){window.closeModal('modal-bid-detail');window.App.openDetailBidId=null;}">
   <div class="modal modal-wide">
     <div class="modal-header">
       <div class="modal-title">Bid Detail</div>
@@ -251,14 +339,17 @@
     </div>
     <div class="modal-body" id="bid-detail-body"></div>
     <div class="modal-footer">
-      <button id="bid-detail-delete-btn" class="btn btn-danger">🗑️ Delete Bid</button>
-      <button id="bid-detail-edit-btn" class="btn btn-outline">✏️ Edit All Fields</button>
+      <button id="bid-detail-delete-btn" class="btn btn-danger btn-sm">🗑 Delete</button>
+      <div style="flex:1"></div>
+      <button id="bid-detail-edit-btn" class="btn btn-secondary">✏️ Edit All Fields</button>
       <button class="btn btn-primary" onclick="window.closeModal('modal-bid-detail');window.App.openDetailBidId=null;">Close</button>
     </div>
   </div>
 </div>
 
-<div class="modal-overlay" id="modal-bid-form" onclick="if(event.target===this)window.closeModal('modal-bid-form')">
+<!-- BID FORM -->
+<div class="modal-backdrop" id="modal-bid-form"
+  onclick="if(event.target===this)window.closeModal('modal-bid-form')">
   <div class="modal">
     <div class="modal-header">
       <div class="modal-title">New Bid</div>
@@ -266,13 +357,15 @@
     </div>
     <div class="modal-body" id="bid-form-body"></div>
     <div class="modal-footer">
-      <button class="btn btn-outline" onclick="window.closeModal('modal-bid-form')">Cancel</button>
+      <button class="btn btn-secondary" onclick="window.closeModal('modal-bid-form')">Cancel</button>
       <button class="btn btn-primary" onclick="window.saveBid()">💾 Save Bid</button>
     </div>
   </div>
 </div>
 
-<div class="modal-overlay" id="modal-task-form" onclick="if(event.target===this)window.closeModal('modal-task-form')">
+<!-- TASK FORM -->
+<div class="modal-backdrop" id="modal-task-form"
+  onclick="if(event.target===this)window.closeModal('modal-task-form')">
   <div class="modal">
     <div class="modal-header">
       <div class="modal-title">New Task</div>
@@ -280,13 +373,15 @@
     </div>
     <div class="modal-body" id="task-form-body"></div>
     <div class="modal-footer">
-      <button class="btn btn-outline" onclick="window.closeModal('modal-task-form')">Cancel</button>
+      <button class="btn btn-secondary" onclick="window.closeModal('modal-task-form')">Cancel</button>
       <button class="btn btn-primary" onclick="window.saveTask()">💾 Save Task</button>
     </div>
   </div>
 </div>
 
-<div class="modal-overlay" id="modal-contact-form" onclick="if(event.target===this)window.closeModal('modal-contact-form')">
+<!-- CONTACT FORM -->
+<div class="modal-backdrop" id="modal-contact-form"
+  onclick="if(event.target===this)window.closeModal('modal-contact-form')">
   <div class="modal">
     <div class="modal-header">
       <div class="modal-title">Add Contact</div>
@@ -294,13 +389,15 @@
     </div>
     <div class="modal-body" id="contact-form-body"></div>
     <div class="modal-footer">
-      <button class="btn btn-outline" onclick="window.closeModal('modal-contact-form')">Cancel</button>
+      <button class="btn btn-secondary" onclick="window.closeModal('modal-contact-form')">Cancel</button>
       <button class="btn btn-primary" onclick="window.saveContact()">💾 Save Contact</button>
     </div>
   </div>
 </div>
 
-<div class="modal-overlay" id="modal-doc-form" onclick="if(event.target===this)window.closeModal('modal-doc-form')">
+<!-- DOC FORM -->
+<div class="modal-backdrop" id="modal-doc-form"
+  onclick="if(event.target===this)window.closeModal('modal-doc-form')">
   <div class="modal">
     <div class="modal-header">
       <div class="modal-title">Add Document</div>
@@ -308,7 +405,7 @@
     </div>
     <div class="modal-body" id="doc-form-body"></div>
     <div class="modal-footer">
-      <button class="btn btn-outline" onclick="window.closeModal('modal-doc-form')">Cancel</button>
+      <button class="btn btn-secondary" onclick="window.closeModal('modal-doc-form')">Cancel</button>
       <button class="btn btn-primary" onclick="window.saveDocument()">💾 Save</button>
     </div>
   </div>
