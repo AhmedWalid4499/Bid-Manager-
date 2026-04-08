@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BID COMMAND — Dar Al-Handasah</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏗️</text></svg>">
+</head>
+<body>
+
+<!-- ─── LOADING OVERLAY ─────────────────────────────────── -->
+<div class="loading-overlay" id="loading-overlay">
+  <div style="text-align:center">
+    <div style="font-family:'Barlow Condensed',sans-serif;font-size:42px;font-weight:800;color:#eaf2ff;letter-spacing:4px;margin-bottom:8px">BID COMMAND</div>
+    <div style="font-family:'Share Tech Mono',monospace;font-size:11px;color:#d4a742;letter-spacing:4px;margin-bottom:32px">DAR AL-HANDASAH · BID MANAGEMENT SYSTEM</div>
+    <div class="spinner"></div>
+    <div style="font-family:'Share Tech Mono',monospace;font-size:11px;color:#5e7999;margin-top:20px">Connecting to database...</div>
+  </div>
+</div>
+
+<!-- ─── APP SHELL ────────────────────────────────────────── -->
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <nav class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-icon">🏗️</div>
+      <div>
+        <div class="logo-text">BID COMMAND</div>
+        <div class="logo-sub">Dar Al-Handasah</div>
+      </div>
+    </div>
+    <div class="sidebar-nav">
+      <div class="nav-section-label">Main</div>
+      <a class="nav-item active" data-page="dashboard" href="#">
+        <span class="nav-icon">⬛</span> Dashboard
+      </a>
+      <a class="nav-item" data-page="bids" href="#">
+        <span class="nav-icon">📁</span> Bids & Tenders
+        <span class="nav-badge" data-badge="bids"></span>
+      </a>
+      <a class="nav-item" data-page="kanban" href="#">
+        <span class="nav-icon">🗂️</span> Kanban Board
+      </a>
+      <a class="nav-item" data-page="tasks" href="#">
+        <span class="nav-icon">✅</span> Tasks
+        <span class="nav-badge" data-badge="tasks"></span>
+      </a>
+
+      <div class="nav-section-label">Resources</div>
+      <a class="nav-item" data-page="contacts" href="#">
+        <span class="nav-icon">👥</span> Contacts
+      </a>
+      <a class="nav-item" data-page="documents" href="#">
+        <span class="nav-icon">📄</span> Documents
+      </a>
+    </div>
+    <div class="sidebar-footer">
+      <div style="margin-bottom:4px;color:var(--gold);font-size:9px;letter-spacing:2px">SYSTEM STATUS</div>
+      <div style="display:flex;align-items:center;gap:6px">
+        <span style="width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 6px var(--green);display:inline-block"></span>
+        Firebase Connected
+      </div>
+    </div>
+  </nav>
+
+  <!-- TOPBAR -->
+  <header class="topbar">
+    <div class="topbar-title" id="topbar-title">Dashboard</div>
+    <div class="topbar-meta" id="topbar-time"></div>
+    <div class="topbar-meta" style="margin-left:8px">
+      <span style="color:var(--text-muted);font-size:10px">MEA REGION</span>
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT -->
+  <main class="main">
+
+    <!-- ══════════════════════════════════════════════════════
+         PAGE: DASHBOARD
+    ══════════════════════════════════════════════════════════ -->
+    <div class="page active" id="page-dashboard">
+      <div style="padding:28px">
+
+        <div class="section-header mb-24">
+          <div>
+            <div style="font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--gold);letter-spacing:3px;margin-bottom:4px">BID COMMAND · COMMAND CENTER</div>
+            <h1 style="font-family:'Barlow Condensed',sans-serif;font-size:32px;font-weight:800;color:var(--text-bright);letter-spacing:2px;text-transform:uppercase">Operations Overview</h1>
+          </div>
+          <div style="display:flex;gap:10px">
+            <button class="btn btn-outline" onclick="window.openTaskModal()">+ Task</button>
+            <button class="btn btn-primary" onclick="window.openBidModal()">+ New Bid</button>
+          </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats-grid" id="dash-stats">
+          <!-- rendered by JS -->
+        </div>
+
+        <div class="grid-2 gap-16" style="margin-bottom:28px">
+          <!-- Urgent bids -->
+          <div>
+            <div class="section-header">
+              <div class="section-title">Urgent Deadlines</div>
+              <a class="btn btn-outline btn-sm" data-page="bids" href="#">View All</a>
+            </div>
+            <div class="bids-grid" id="dash-urgent" style="grid-template-columns:1fr">
+              <!-- rendered -->
+            </div>
+          </div>
+
+          <!-- Pipeline + Recent Tasks -->
+          <div style="display:flex;flex-direction:column;gap:20px">
+            <div class="card">
+              <div class="section-header" style="margin-bottom:12px">
+                <div class="section-title" style="font-size:15px">Bid Pipeline</div>
+              </div>
+              <div id="dash-pipeline"></div>
+            </div>
+            <div>
+              <div class="section-header">
+                <div class="section-title" style="font-size:15px">Pending Tasks</div>
+                <a class="btn btn-outline btn-sm" data-page="tasks" href="#">View All</a>
+              </div>
+              <div id="dash-tasks"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════
+         PAGE: BIDS
+    ══════════════════════════════════════════════════════════ -->
+    <div class="page" id="page-bids">
+      <div style="padding:28px">
+        <div class="section-header mb-24">
+          <div>
+            <div style="font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--gold);letter-spacing:3px;margin-bottom:4px">BID COMMAND · BID REGISTRY</div>
+            <h1 style="font-family:'Barlow Condensed',sans-serif;font-size:32px;font-weight:800;color:var(--text-bright);letter-spacing:2px;text-transform:uppercase">Bids & Tenders</h1>
+          </div>
+          <button class="btn btn-primary" onclick="window.openBidModal()">+ New Bid</button>
+        </div>
+
+        <div class="filter-bar">
+          <input class="search-input" id="bids-search" placeholder="🔍  Search bids by name, client, reference...">
+          <select class="form-select" id="bids-filter" style="width:auto;min-width:140px">
+            <option value="all">All Statuses</option>
+            <option value="prep">In Prep</option>
+            <option value="active">Active</option>
+            <option value="submitted">Submitted</option>
+            <option value="won">Won</option>
+            <option value="lost">Lost</option>
+            <option value="paused">On Hold</option>
+          </select>
+        </div>
+
+        <div class="bids-grid" id="bids-grid">
+          <!-- rendered by JS -->
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════
+         PAGE: KANBAN
+    ══════════════════════════════════════════════════════════ -->
+    <div class="page" id="page-kanban">
+      <div style="padding:28px">
+        <div class="section-header mb-24">
+          <div>
+            <div style="font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--gold);letter-spacing:3px;margin-bottom:4px">BID COMMAND · WORKFLOW</div>
+            <h1 style="font-family:'Barlow Condensed',sans-serif;font-size:32px;font-weight:800;color:var(--text-bright);letter-spacing:2px;text-transform:uppercase">Kanban Board</h1>
+          </div>
+          <div style="display:flex;gap:10px;align-items:center">
+            <select class="form-select" id="kanban-bid-filter" style="width:auto;min-width:180px">
+              <option value="all">All Bids</option>
+            </select>
+            <button class="btn btn-primary" onclick="window.openTaskModal()">+ Add Card</button>
+          </div>
+        </div>
+        <div class="kanban-board" id="kanban-board">
+          <!-- rendered by JS -->
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════
+         PAGE: TASKS
+    ══════════════════════════════════════════════════════════ -->
+    <div class="page" id="page-tasks">
+      <div style="padding:28px">
+        <div class="section-header mb-16">
+          <div>
+            <div style="font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--gold);letter-spacing:3px;margin-bottom:4px">BID COMMAND · TASK TRACKER</div>
+            <h1 style="font-family:'Barlow Condensed',sans-serif;font-size:32px;font-weight:800;color:var(--text-bright);letter-spacing:2px;text-transform:uppercase">Task Management</h1>
+          </div>
+          <button class="btn btn-primary" onclick="window.openTaskModal()">+ New Task</button>
+        </div>
+
+        <div id="tasks-stats"></div>
+
+        <div class="filter-bar">
+          <input class="search-input" id="tasks-search" placeholder="🔍  Search tasks...">
+          <select class="form-select" id="tasks-bid-filter" style="width:auto;min-width:160px">
+            <option value="all">All Bids</option>
+          </select>
+          <select class="form-select" id="tasks-priority-filter" style="width:auto">
+            <option value="all">All Priorities</option>
+            <option value="high">High</option>
+            <option value="medium">Medium</option>
+            <option value="low">Low</option>
+          </select>
+          <select class="form-select" id="tasks-status-filter" style="width:auto">
+            <option value="pending">Pending</option>
+            <option value="done">Completed</option>
+            <option value="all">All</option>
+          </select>
+        </div>
+
+        <div id="tasks-list"></div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════
+         PAGE: CONTACTS
+    ══════════════════════════════════════════════════════════ -->
+    <div class="page" id="page-contacts">
+      <div style="padding:28px">
+        <div class="section-header mb-24">
+          <div>
+            <div style="font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--gold);letter-spacing:3px;margin-bottom:4px">BID COMMAND · STAKEHOLDERS</div>
+            <h1 style="font-family:'Barlow Condensed',sans-serif;font-size:32px;font-weight:800;color:var(--text-bright);letter-spacing:2px;text-transform:uppercase">Contacts</h1>
+          </div>
+          <button class="btn btn-primary" onclick="window.openContactModal()">+ Add Contact</button>
+        </div>
+        <div class="filter-bar">
+          <input class="search-input" id="contacts-search" placeholder="🔍  Search contacts...">
+        </div>
+        <div class="card">
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Name / Email</th>
+                  <th>Role</th>
+                  <th>Company</th>
+                  <th>Department</th>
+                  <th>Phone</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="contacts-tbody">
+                <!-- rendered -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════
+         PAGE: DOCUMENTS
+    ══════════════════════════════════════════════════════════ -->
+    <div class="page" id="page-documents">
+      <div style="padding:28px">
+        <div class="section-header mb-24">
+          <div>
+            <div style="font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--gold);letter-spacing:3px;margin-bottom:4px">BID COMMAND · DOCUMENT REGISTRY</div>
+            <h1 style="font-family:'Barlow Condensed',sans-serif;font-size:32px;font-weight:800;color:var(--text-bright);letter-spacing:2px;text-transform:uppercase">Documents</h1>
+          </div>
+          <button class="btn btn-primary" onclick="window.openDocModal()">+ Add Document</button>
+        </div>
+        <div class="filter-bar">
+          <select class="form-select" id="docs-bid-filter" style="width:auto;min-width:200px">
+            <option value="all">All Bids</option>
+          </select>
+        </div>
+        <div class="card">
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th style="width:40px"></th>
+                  <th>Document</th>
+                  <th>Bid</th>
+                  <th>Category</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="docs-tbody">
+                <!-- rendered -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     MODALS
+═══════════════════════════════════════════════════════════════ -->
+
+<!-- BID DETAIL MODAL -->
+<div class="modal-overlay" id="modal-bid-detail" onclick="if(event.target===this)window.closeModal('modal-bid-detail')">
+  <div class="modal" style="max-width:780px">
+    <div class="modal-header">
+      <div class="modal-title">Bid Detail</div>
+      <button class="modal-close" onclick="window.closeModal('modal-bid-detail')">✕</button>
+    </div>
+    <div class="modal-body" id="bid-detail-body">
+      <!-- rendered dynamically -->
+    </div>
+    <div class="modal-footer">
+      <button id="bid-detail-delete-btn" class="btn btn-danger">🗑️ Delete Bid</button>
+      <button id="bid-detail-edit-btn" class="btn btn-outline">✏️ Edit Bid</button>
+      <button class="btn btn-primary" onclick="window.closeModal('modal-bid-detail')">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- BID FORM MODAL -->
+<div class="modal-overlay" id="modal-bid-form" onclick="if(event.target===this)window.closeModal('modal-bid-form')">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">New Bid</div>
+      <button class="modal-close" onclick="window.closeModal('modal-bid-form')">✕</button>
+    </div>
+    <div class="modal-body" id="bid-form-body">
+      <!-- rendered dynamically -->
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="window.closeModal('modal-bid-form')">Cancel</button>
+      <button class="btn btn-primary" onclick="window.saveBid()">💾 Save Bid</button>
+    </div>
+  </div>
+</div>
+
+<!-- TASK FORM MODAL -->
+<div class="modal-overlay" id="modal-task-form" onclick="if(event.target===this)window.closeModal('modal-task-form')">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">New Task</div>
+      <button class="modal-close" onclick="window.closeModal('modal-task-form')">✕</button>
+    </div>
+    <div class="modal-body" id="task-form-body">
+      <!-- rendered dynamically -->
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="window.closeModal('modal-task-form')">Cancel</button>
+      <button class="btn btn-primary" onclick="window.saveTask()">💾 Save Task</button>
+    </div>
+  </div>
+</div>
+
+<!-- CONTACT FORM MODAL -->
+<div class="modal-overlay" id="modal-contact-form" onclick="if(event.target===this)window.closeModal('modal-contact-form')">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">New Contact</div>
+      <button class="modal-close" onclick="window.closeModal('modal-contact-form')">✕</button>
+    </div>
+    <div class="modal-body" id="contact-form-body">
+      <!-- rendered dynamically -->
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="window.closeModal('modal-contact-form')">Cancel</button>
+      <button class="btn btn-primary" onclick="window.saveContact()">💾 Save Contact</button>
+    </div>
+  </div>
+</div>
+
+<!-- DOCUMENT FORM MODAL -->
+<div class="modal-overlay" id="modal-doc-form" onclick="if(event.target===this)window.closeModal('modal-doc-form')">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Add Document</div>
+      <button class="modal-close" onclick="window.closeModal('modal-doc-form')">✕</button>
+    </div>
+    <div class="modal-body" id="doc-form-body">
+      <!-- rendered dynamically -->
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="window.closeModal('modal-doc-form')">Cancel</button>
+      <button class="btn btn-primary" onclick="window.saveDocument()">💾 Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div id="toast-container"></div>
+
+<!-- SCRIPTS -->
+<script type="module" src="js/app.js"></script>
+<script>
+  // Page title update helper
+  const pageTitles = {
+    dashboard: 'Dashboard',
+    bids: 'Bids & Tenders',
+    kanban: 'Kanban Board',
+    tasks: 'Task Management',
+    contacts: 'Contacts',
+    documents: 'Documents'
+  };
+
+  // Update topbar title on nav
+  document.addEventListener('click', e => {
+    const nav = e.target.closest('[data-page]');
+    if (nav) {
+      const title = document.getElementById('topbar-title');
+      if (title) title.textContent = pageTitles[nav.dataset.page] || '';
+    }
+  });
+</script>
+</body>
+</html>
